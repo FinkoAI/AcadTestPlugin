@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:AcadPluginTest.View.Controls"
+                    xmlns:converter="clr-namespace:AcadPluginTest.Content.Converters"
+                    xmlns:templateSelector="clr-namespace:AcadPluginTest.Content.TemplateSelectors">
+
+    
+
+</ResourceDictionary>
