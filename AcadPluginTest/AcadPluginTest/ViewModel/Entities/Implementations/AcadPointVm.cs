@@ -15,11 +15,12 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
             var coordinate = point.Position.ToIsoCoordinates();
 
             Id = id;
-            Name = "Точка";
             IsModified = false;
             AcadObjectType = ObjectType.Point;
             Thickness = point.Thickness;
             Coordinate = coordinate;
+
+            Name = string.Format("Точка {0}", Coordinate.ToCoordinateString());
         }
 
         public ObjectId Id { get; set; }

@@ -45,8 +45,9 @@ namespace AcadPluginTest.Helpers
 
         public static string ToCoordinateString(this IsoCoordinate coordinate)
         {
-            return string.Format("({0}, {1}, {2})", coordinate.XCoordinate, coordinate.YCoordinate,
-                coordinate.ZCoordinate);
+            return string.Format("({0}, {1}, {2})", coordinate.XCoordinate.ToString("F3"),
+                coordinate.YCoordinate.ToString("F3"),
+                coordinate.ZCoordinate.ToString("F3"));
         }
 
         public static Color ToSystemColor(this Autodesk.AutoCAD.Colors.Color color)

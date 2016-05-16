@@ -21,7 +21,7 @@
            x:Key="NotGroupedDecimalUpDownStyle"
            BasedOn="{StaticResource CoordinateDecimalUpdDown}">
         <Setter Property="Margin"
-                Value="0,5,10,0"></Setter>
+                Value="0,5,5,0"></Setter>
     </Style>
     
     

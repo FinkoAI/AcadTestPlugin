@@ -14,16 +14,18 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
             var center = circle.Center.ToIsoCoordinates();
 
             Id = id;
-            Name = "Окружность";
             IsModified = false;
             AcadObjectType = ObjectType.Circle;
             CenterCoordinate = center;
             Radius = circle.Radius;
             Thickness = circle.Thickness;
+
+            Name = string.Format("Окружность {0}", CenterCoordinate.ToCoordinateString()); 
         }
 
         public ObjectId Id { get; set; }
         public string Name { get; set; }
+
         public bool IsModified { get; set; }
         public ObjectType AcadObjectType { get; set; }
 

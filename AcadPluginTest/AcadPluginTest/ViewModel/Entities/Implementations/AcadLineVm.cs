@@ -12,12 +12,13 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
         public AcadLineVm(ObjectId id, Line line)
         {
             Id = id;
-            Name ="Линия";
             IsModified = false;
             AcadObjectType = ObjectType.Line;
             StartCoordinate = line.StartPoint.ToIsoCoordinates();
             EndCoordinate = line.EndPoint.ToIsoCoordinates();
             Thickness = line.Thickness;
+
+            Name = string.Format("Линия {0} => {1}", StartCoordinate.ToCoordinateString(), EndCoordinate.ToCoordinateString());
         }
 
 
