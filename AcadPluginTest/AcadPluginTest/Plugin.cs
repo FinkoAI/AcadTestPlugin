@@ -9,18 +9,22 @@ namespace AcadPluginTest
 {
     public class Plugin : IExtensionApplication
     {
-        
-
         public void Initialize()
         {
-            //очень странный костыль но без этого не работает EventToCommand
-            typeof (System.Windows.Interactivity.Behavior).ToString();
-            typeof (GalaSoft.MvvmLight.Command.EventToCommand).ToString();
+            ForceLibraies();
         }
 
         public void Terminate()
         {
             //throw new NotImplementedException();
+        }
+
+        //очень странный костыль, но без этого не работают подключённые библиотеки
+        private void ForceLibraies()
+        {
+            typeof (System.Windows.Interactivity.Behavior).ToString();
+            typeof (GalaSoft.MvvmLight.Command.EventToCommand).ToString();
+            typeof (Xceed.Wpf.Toolkit.DecimalUpDown).ToString();
         }
     }
 }

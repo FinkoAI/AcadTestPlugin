@@ -7,7 +7,7 @@ using GalaSoft.MvvmLight;
 
 namespace AcadPluginTest.ViewModel.Entities.Implementations
 {
-    public class AcadCircleVm : ViewModelBase, IAcadObject
+    public class AcadCircleVm : ViewModelBase, IAcadGeometryObject
     {
         public AcadCircleVm(ObjectId id, Circle circle)
         {
@@ -15,19 +15,21 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
 
             Id = id;
             Name = "Окружность";
-            IsModidified = false;
+            IsModified = false;
             AcadObjectType = ObjectType.Circle;
             CenterCoordinate = center;
             Radius = circle.Radius;
+            Thickness = circle.Thickness;
         }
 
         public ObjectId Id { get; set; }
         public string Name { get; set; }
-        public bool IsModidified { get; set; }
+        public bool IsModified { get; set; }
         public ObjectType AcadObjectType { get; set; }
 
         public IsoCoordinate CenterCoordinate { get; set; }
         public double Radius { get; set; }
 
+        public double Thickness { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace AcadPluginTest
             
             var dialogWindow = new PropertiesDialog()
             {
-                DataContext = InitializePluginDialogViewModel(document)
+                DataContext = new PropertiesDialogViewModel(document)
             };
 
             AutocadApplication.ShowModalWindow(dialogWindow);
@@ -48,21 +48,13 @@ namespace AcadPluginTest
 
                 var uc = new PaletteControl()
                 {
-                    DataContext = InitializePluginDialogViewModel(document)
+                    DataContext = new PropertiesDialogViewModel(document)
                 };
-                _ps.AddVisual("AddVisual", uc);
+                _ps.AddVisual("PaletteControl", uc);
             }
 
             _ps.KeepFocus = true;
             _ps.Visible = true;
-        }
-
-        private PropertiesDialogViewModel InitializePluginDialogViewModel(Document document)
-        {
-            var layerVmList = AcadHelper.GetLayerVms(document);
-            var vm = new PropertiesDialogViewModel() { Layers = new ObservableCollection<AcadLayerVm>(layerVmList) };
-
-            return vm;
         }
     }
 }

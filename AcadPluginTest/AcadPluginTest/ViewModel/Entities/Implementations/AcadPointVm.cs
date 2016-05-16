@@ -8,7 +8,7 @@ using GalaSoft.MvvmLight;
 
 namespace AcadPluginTest.ViewModel.Entities.Implementations
 {
-    public class AcadPointVm : ViewModelBase, IAcadObject
+    public class AcadPointVm : ViewModelBase, IAcadGeometryObject
     {
         public AcadPointVm(ObjectId id, DBPoint point)
         {
@@ -16,17 +16,18 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
 
             Id = id;
             Name = "Точка";
-            IsModidified = false;
+            IsModified = false;
             AcadObjectType = ObjectType.Point;
-
+            Thickness = point.Thickness;
             Coordinate = coordinate;
         }
 
         public ObjectId Id { get; set; }
         public string Name { get; set; }
-        public bool IsModidified { get; set; }
+        public bool IsModified { get; set; }
         public ObjectType AcadObjectType { get; set; }
 
         public IsoCoordinate Coordinate { get; set; }
+        public double Thickness { get; set; }
     }
 }

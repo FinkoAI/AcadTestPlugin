@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:AcadPluginTest.View.Controls"
                     xmlns:templateSelector="clr-namespace:AcadPluginTest.Content.TemplateSelectors"
-                    xmlns:converters="clr-namespace:AcadPluginTest.Content.Converters">
+                    xmlns:converters="clr-namespace:AcadPluginTest.Content.Converters"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/AcadPluginTest;component/Content/Styles.xaml"></ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
@@ -22,9 +23,9 @@
         <GroupBox Header="Свойства слоя">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -33,47 +34,86 @@
 
                 <Label Content="Имя слоя"
                        Grid.Row="0"
-                       Grid.Column="0"></Label>
+                       Grid.Column="0" 
+                       Style="{StaticResource HeaderLabelStyle}"></Label>
                 <TextBox Text="{Binding Name}"
                          Grid.Row="0"
-                         Grid.Column="1"></TextBox>
+                         Grid.Column="1" 
+                         Margin="5,5,5,0"></TextBox>
 
                 <Label Content="Цвет слоя"
                        Grid.Row="1"
-                       Grid.Column="0"></Label>
-                <TextBox Text="цвет"
-                         Grid.Row="1"
-                         Grid.Column="1"></TextBox>
+                       Grid.Column="0"
+                       Style="{StaticResource HeaderLabelStyle}"></Label>
+                <xctk:ColorPicker   Grid.Row="1"
+                                    Grid.Column="1"
+                                    SelectedColor="{Binding Color}"
+                                    DisplayColorAndName="True"
+                                    Margin="5,5,5,0"></xctk:ColorPicker>
 
                 <Label Content="Видимость слоя"
                        Grid.Row="2"
-                       Grid.Column="0"></Label>
+                       Grid.Column="0"
+                       Style="{StaticResource HeaderLabelStyle}"></Label>
                 <CheckBox IsChecked="{Binding IsHidden}"
                           Grid.Row="2"
-                          Grid.Column="1"></CheckBox>
+                          Grid.Column="1"
+                          Margin="5,5,5,0"></CheckBox>
             </Grid>
         </GroupBox>
     </DataTemplate>
 
     <DataTemplate x:Key="PointControlTemplate">
-        <GroupBox Header="Координаты точки">
-            <controls:CoordinatesControl DataContext="{Binding Coordinate}" />
-        </GroupBox>
+        <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="250" />
+                </Grid.ColumnDefinitions>
+                <Label  Grid.Column="0"
+                        Style="{StaticResource HeaderLabelStyle}"
+                        Content="Высота" />
+                <xctk:DecimalUpDown Grid.Column="1"
+                                    Value="{Binding Thickness}"
+                                    Style="{StaticResource NotGroupedDecimalUpDownStyle}"/>
+
+            </Grid>
+            <GroupBox Header="Координаты точки">
+                <controls:CoordinatesControl DataContext="{Binding Coordinate}" />
+            </GroupBox>
+        </StackPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="CircleControlTemplate">
         <StackPanel>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="250" />
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
                 <Label Grid.Row="0"
                        Grid.Column="0"
-                       Content="Радиус"></Label>
-                <TextBox Grid.Row="0"
-                         Grid.Column="1"></TextBox>
+                       Content="Радиус"
+                       Style="{StaticResource HeaderLabelStyle}"></Label>
+                <xctk:DecimalUpDown Grid.Row="0"
+                                    Grid.Column="1"
+                                    Style="{StaticResource NotGroupedDecimalUpDownStyle}"
+                                    Value="{Binding Radius}" />
+                
+                <Label Grid.Row="1"
+                       Grid.Column="0"
+                       Content="Высота"
+                       Style="{StaticResource HeaderLabelStyle}"></Label>
+                <xctk:DecimalUpDown Grid.Row="1"
+                                    Grid.Column="1"
+                                    Style="{StaticResource NotGroupedDecimalUpDownStyle}"
+                                    Value="{Binding Thickness}" />
+                
             </Grid>
             <GroupBox Header="Координаты центра">
                 <controls:CoordinatesControl DataContext="{Binding CenterCoordinate}" />
@@ -83,6 +123,20 @@
 
     <DataTemplate x:Key="LineControlTemplate">
         <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="250" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0"
+                       Content="Высота"
+                       Style="{StaticResource HeaderLabelStyle}"></Label>
+                <xctk:DecimalUpDown Grid.Column="1"
+                                    Style="{StaticResource NotGroupedDecimalUpDownStyle}"
+                                    Value="{Binding Thickness}" />
+            </Grid>
+
             <GroupBox Header="Начальная точка">
                 <controls:CoordinatesControl DataContext="{Binding StartCoordinate}" />
             </GroupBox>
@@ -107,7 +161,7 @@
         </StackPanel>
         <HierarchicalDataTemplate.ItemTemplate>
             <DataTemplate>
-                <StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <Image Source="{Binding AcadObjectType, Converter={StaticResource ObjectTypeToImageConverter}}"
                            Margin="0,0,5,0"
                            Width="20"

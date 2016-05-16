@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Media;
 using AcadPluginTest.Enums;
 using AcadPluginTest.Model.Implementations;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -46,6 +47,11 @@ namespace AcadPluginTest.Helpers
         {
             return string.Format("({0}, {1}, {2})", coordinate.XCoordinate, coordinate.YCoordinate,
                 coordinate.ZCoordinate);
+        }
+
+        public static Color ToSystemColor(this Autodesk.AutoCAD.Colors.Color color)
+        {
+            return Color.FromRgb(color.Red, color.Green, color.Blue);
         }
     }
 }

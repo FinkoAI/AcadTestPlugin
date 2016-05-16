@@ -7,7 +7,7 @@ namespace AcadPluginTest.ViewModel.Entities.Interfaces
     {
         ObjectId Id { get; set; }
         string Name { get; set; }
-        bool IsModidified { get; set; }
+        bool IsModified { get; set; }
         ObjectType AcadObjectType { get; set; }
     }
 }
