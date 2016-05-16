@@ -7,13 +7,11 @@
              d:DesignHeight="300"
              d:DesignWidth="300">
     <UserControl.Resources>
-        <Style x:Key="HeaderLabelStyle"
-               TargetType="{x:Type Label}">
-            <Setter Property="FontWeight"
-                    Value="Bold" />
-            <Setter Property="Margin"
-                    Value="5,5,5,0" />
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/AcadPluginTest;component/Content/Templates.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>

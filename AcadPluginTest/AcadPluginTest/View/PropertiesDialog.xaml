@@ -17,24 +17,16 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <uc:AcadObjectsTree Grid.Row="0"
-                            Grid.RowSpan="2" />
-        <uc:AcadObjectControl Grid.Row="0"
-                              Grid.Column="1"
-                              DataContext="{Binding SelectedItem}" />
-        <StackPanel Grid.Column="1"
-                    Grid.Row="1"
-                    Style="{StaticResource BottomStackPanel}">
-            <Button Style="{StaticResource CommonButtonStyle}"
-                    Content="Сохранить"></Button>
-            <Button Style="{StaticResource CommonButtonStyle}"
-                    Content="Отмена"></Button>
-        </StackPanel>
+                            Grid.Column="0"
+                            Style="{StaticResource CommonUserControlStyle}" />
+        <uc:EditControl Grid.Row="0"
+                        Grid.Column="1"
+                        Style="{StaticResource CommonUserControlStyle}" />
     </Grid>
 </Window>

@@ -3,99 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:control="clr-namespace:AcadPluginTest.View.Controls"
-             xmlns:templateSelectors="clr-namespace:AcadPluginTest.Content.TemplateSelectors"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="340">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/AcadPluginTest;component/Content/Styles.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/AcadPluginTest;component/Content/Templates.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
-
-            <Style TargetType="{x:Type Label}"
-                   x:Key="NotSelectedStyle">
-                <Setter Property="FontSize"
-                        Value="20" />
-                <Setter Property="FontWeight"
-                        Value="Bold"></Setter>
-            </Style>
-            <DataTemplate x:Key="EmptyControlTemplate">
-                <StackPanel HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                    <Label Content="Выберите элемент в дереве..."
-                           Style="{StaticResource NotSelectedStyle}"></Label>
-                </StackPanel>
-            </DataTemplate>
-
-            <DataTemplate x:Key="LayerControlTemplate">
-                <GroupBox Header="Свойства слоя">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        
-                        <Label Content="Имя слоя" Grid.Row="0" Grid.Column="0"></Label>
-                        <TextBox Text="{Binding Name}" Grid.Row="0" Grid.Column="1"></TextBox>
-                        
-                        <Label Content="Цвет слоя" Grid.Row="1" Grid.Column="0"></Label>
-                        <TextBox Text="цвет" Grid.Row="1" Grid.Column="1"></TextBox>
-                        
-                        <Label Content="Видимость слоя" Grid.Row="2" Grid.Column="0"></Label>
-                        <CheckBox IsChecked="{Binding IsHidden}" Grid.Row="2" Grid.Column="1"></CheckBox>
-                    </Grid>
-                </GroupBox>
-            </DataTemplate>
-
-            <DataTemplate x:Key="PointControlTemplate">
-                <GroupBox Header="Координаты точки">
-                    <control:CoordinatesControl DataContext="{Binding Coordinate}" />
-                </GroupBox>
-            </DataTemplate>
-
-            <DataTemplate x:Key="CircleControlTemplate">
-                <StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-
-                        <Label Grid.Row="0"
-                               Grid.Column="0"></Label>
-                        <TextBox Grid.Row="0"
-                                 Grid.Column="1"></TextBox>
-                    </Grid>
-                    <GroupBox Header="Координаты центра">
-                        <control:CoordinatesControl DataContext="{Binding CenterCoordinate}" />
-                    </GroupBox>
-                </StackPanel>
-            </DataTemplate>
-
-            <DataTemplate x:Key="LineControlTemplate">
-                <StackPanel>
-                    <GroupBox Header="Начальная точка">
-                        <control:CoordinatesControl DataContext="{Binding StartCoordinate}" />
-                    </GroupBox>
-                    <GroupBox Header="Конечная точка">
-                        <control:CoordinatesControl DataContext="{Binding EndCoordinate}" />
-                    </GroupBox>
-                </StackPanel>
-            </DataTemplate>
-
-            <templateSelectors:AcadObjectTemplateSelector x:Key="AcadObjectTemplateSelector" />
-
         </ResourceDictionary>
-        
-        
     </UserControl.Resources>
     <Grid>
-        <ContentControl ContentTemplateSelector="{StaticResource AcadObjectTemplateSelector}" Content="{Binding SelectedItem}"></ContentControl>
+        <ContentControl ContentTemplateSelector="{StaticResource AcadObjectTemplateSelector}" Content="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
     </Grid>
 </UserControl>

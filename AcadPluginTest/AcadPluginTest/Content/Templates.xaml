@@ -1,8 +1,123 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:AcadPluginTest.View.Controls"
-                    xmlns:converter="clr-namespace:AcadPluginTest.Content.Converters"
-                    xmlns:templateSelector="clr-namespace:AcadPluginTest.Content.TemplateSelectors">
+                    xmlns:templateSelector="clr-namespace:AcadPluginTest.Content.TemplateSelectors"
+                    xmlns:converters="clr-namespace:AcadPluginTest.Content.Converters">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/AcadPluginTest;component/Content/Styles.xaml"></ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+
+    <templateSelector:AcadObjectTemplateSelector x:Key="AcadObjectTemplateSelector" />
+    <converters:ObjectTypeToImageConverter x:Key="ObjectTypeToImageConverter" />
+
+    <DataTemplate x:Key="EmptyControlTemplate">
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <Label Content="Выберите элемент в дереве..."
+                   Style="{StaticResource NotSelectedStyle}"></Label>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="LayerControlTemplate">
+        <GroupBox Header="Свойства слоя">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Имя слоя"
+                       Grid.Row="0"
+                       Grid.Column="0"></Label>
+                <TextBox Text="{Binding Name}"
+                         Grid.Row="0"
+                         Grid.Column="1"></TextBox>
+
+                <Label Content="Цвет слоя"
+                       Grid.Row="1"
+                       Grid.Column="0"></Label>
+                <TextBox Text="цвет"
+                         Grid.Row="1"
+                         Grid.Column="1"></TextBox>
+
+                <Label Content="Видимость слоя"
+                       Grid.Row="2"
+                       Grid.Column="0"></Label>
+                <CheckBox IsChecked="{Binding IsHidden}"
+                          Grid.Row="2"
+                          Grid.Column="1"></CheckBox>
+            </Grid>
+        </GroupBox>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PointControlTemplate">
+        <GroupBox Header="Координаты точки">
+            <controls:CoordinatesControl DataContext="{Binding Coordinate}" />
+        </GroupBox>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CircleControlTemplate">
+        <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Content="Радиус"></Label>
+                <TextBox Grid.Row="0"
+                         Grid.Column="1"></TextBox>
+            </Grid>
+            <GroupBox Header="Координаты центра">
+                <controls:CoordinatesControl DataContext="{Binding CenterCoordinate}" />
+            </GroupBox>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="LineControlTemplate">
+        <StackPanel>
+            <GroupBox Header="Начальная точка">
+                <controls:CoordinatesControl DataContext="{Binding StartCoordinate}" />
+            </GroupBox>
+            <GroupBox Header="Конечная точка">
+                <controls:CoordinatesControl DataContext="{Binding EndCoordinate}" />
+            </GroupBox>
+        </StackPanel>
+    </DataTemplate>
+
+    <HierarchicalDataTemplate x:Key="TreeViewHierahicalTemplate"
+                              ItemsSource="{Binding Objects}">
+        <StackPanel Orientation="Horizontal">
+            <Image Source="/AcadPluginTest;component/Content/Images/layers_50px.png"
+                   Margin="0,0,5,0"
+                   Width="20"
+                   Height="20"
+                   Stretch="Fill" />
+            <TextBlock Text="{Binding Name}"
+                       Height="20" />
+            <TextBlock Text="{Binding Objects.Count, StringFormat=' [{0}]'}"
+                       Height="20" />
+        </StackPanel>
+        <HierarchicalDataTemplate.ItemTemplate>
+            <DataTemplate>
+                <StackPanel>
+                    <Image Source="{Binding AcadObjectType, Converter={StaticResource ObjectTypeToImageConverter}}"
+                           Margin="0,0,5,0"
+                           Width="20"
+                           Height="20"
+                           Stretch="Fill" />
+                    <TextBlock Text="{Binding Name}" />
+                </StackPanel>
+            </DataTemplate>
+        </HierarchicalDataTemplate.ItemTemplate>
+    </HierarchicalDataTemplate>
 
     
 

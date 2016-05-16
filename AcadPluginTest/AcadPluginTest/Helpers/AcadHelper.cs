@@ -17,7 +17,7 @@ namespace AcadPluginTest.Helpers
         /// </summary>
         /// <param name="db">БД документа</param>
         /// <returns></returns>
-        public static List<LayerTableRecord> GetLayers(Database db)
+        private static List<LayerTableRecord> GetLayers(Database db)
         {
             List<LayerTableRecord> result;
 
@@ -41,7 +41,7 @@ namespace AcadPluginTest.Helpers
             return result;
         }
 
-        public static List<ObjectId> GetLayerObjectIds(string layerName, Document doc)
+        private static List<ObjectId> GetLayerObjectIds(string layerName, Document doc)
         {
             var editor = doc.Editor;
 
@@ -67,8 +67,7 @@ namespace AcadPluginTest.Helpers
             return null;
         }
 
-
-        public static List<IAcadObject> GetAllObjectsByIdList(List<ObjectId> objectIds, Database db)
+        private static List<IAcadObject> GetAllObjectsByIdList(List<ObjectId> objectIds, Database db)
         {
             var result = new List<IAcadObject>();
             
@@ -101,6 +100,26 @@ namespace AcadPluginTest.Helpers
             }
 
             return result;
+        }
+
+        public static List<AcadLayerVm> GetLayerVms(Document doc)
+        {
+            var database = doc.Database;
+
+            var acadLayers = GetLayers(database);
+            var layerVmList = new List<AcadLayerVm>();
+
+            foreach (var layerRecord in acadLayers)
+            {
+                var layerObjectIds = GetLayerObjectIds(layerRecord.Name, doc);
+                var layerObjects = GetAllObjectsByIdList(layerObjectIds, database);
+
+                var layerVm = new AcadLayerVm(layerRecord, layerObjects);
+
+                layerVmList.Add(layerVm);
+            }
+
+            return layerVmList;
         }
     }
 }
