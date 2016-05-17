@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AcadPluginTest.Enums;
+using AcadPluginTest.Factories;
 using AcadPluginTest.ViewModel.Entities.Implementations;
 using AcadPluginTest.ViewModel.Entities.Interfaces;
 using Autodesk.AutoCAD.ApplicationServices;
@@ -13,6 +14,9 @@ namespace AcadPluginTest.Helpers
 {
     public static class AcadHelper
     {
+        public static string[] ChangingCommands = new[] {"LAYER", "POINT", "LINE", "CIRCLE"};
+
+
         /// <summary>
         /// Возвращает список всех слоёв документа
         /// </summary>
@@ -80,9 +84,9 @@ namespace AcadPluginTest.Helpers
         /// <param name="objectIds"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        private static List<IAcadObject> GetAllObjectsByIdList(List<ObjectId> objectIds, Database db)
+        private static List<IAcadGeometryObject> GetAllObjectsByIdList(List<ObjectId> objectIds, Database db)
         {
-            var result = new List<IAcadObject>();
+            var result = new List<IAcadGeometryObject>();
             
             using (var tr = db.TransactionManager.StartOpenCloseTransaction())
             {
@@ -92,15 +96,15 @@ namespace AcadPluginTest.Helpers
                     {
                         case ObjectType.Line:
                             var line = tr.GetTypedObject<Line>(objectId, OpenMode.ForRead);
-                            result.Add(new AcadLineVm(objectId, line));
+                            result.Add(AcadObjectVmFactory.GetAcadObjectVm(line));
                             break;
                         case ObjectType.Point:
                             var point = tr.GetTypedObject<DBPoint>(objectId, OpenMode.ForRead);
-                            result.Add(new AcadPointVm(objectId, point));
+                            result.Add(AcadObjectVmFactory.GetAcadObjectVm(point));
                             break;
                         case ObjectType.Circle:
                             var circle = tr.GetTypedObject<Circle>(objectId, OpenMode.ForRead);
-                            result.Add(new AcadCircleVm(objectId, circle));
+                            result.Add(AcadObjectVmFactory.GetAcadObjectVm(circle));
                             break;
                         case ObjectType.Unknown:
                             break;
@@ -132,9 +136,9 @@ namespace AcadPluginTest.Helpers
                 var layerObjectIds = GetLayerObjectIds(layerRecord.Name, doc);
                 var layerObjects = GetAllObjectsByIdList(layerObjectIds, database);
 
-                var layerVm = new AcadLayerVm(layerRecord, layerObjects);
+                var layerVm = AcadObjectVmFactory.GetAcadObjectVm(layerRecord, layerObjects);
 
-                layerVmList.Add(layerVm);
+                layerVmList.Add((AcadLayerVm)layerVm);
             }
 
             return layerVmList;

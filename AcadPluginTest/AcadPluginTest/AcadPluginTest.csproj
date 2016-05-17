@@ -138,6 +138,7 @@
     </Compile>
     <Compile Include="Content\Converters\BooleanToFontWeightConverter.cs" />
     <Compile Include="Content\Converters\ObjectTypeToImageConverter.cs" />
+    <Compile Include="Factories\AcadObjectVmFactory.cs" />
     <Compile Include="PluginCommands.cs" />
     <Compile Include="Content\TemplateSelectors\AcadObjectTemplateSelector.cs" />
     <Compile Include="Enums\ObjectType.cs" />
@@ -149,6 +150,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\Entities\Implementations\AcadCircleVm.cs" />
     <Compile Include="ViewModel\Entities\Implementations\AcadLineVm.cs" />
+    <Compile Include="ViewModel\Entities\Implementations\Base\BaseAcadGeometryObject.cs" />
+    <Compile Include="ViewModel\Entities\Implementations\Base\BaseAcadObject.cs" />
     <Compile Include="ViewModel\Entities\Interfaces\IAcadGeometryObject.cs" />
     <Compile Include="ViewModel\Entities\Interfaces\IAcadObject.cs" />
     <Compile Include="ViewModel\Entities\Implementations\AcadLayerVm.cs" />

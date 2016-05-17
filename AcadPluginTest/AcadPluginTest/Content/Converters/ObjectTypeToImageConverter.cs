@@ -3,16 +3,17 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using AcadPluginTest.Enums;
-using AcadPluginTest.ViewModel.Entities.Implementations;
-using AcadPluginTest.ViewModel.Entities.Interfaces;
 
 namespace AcadPluginTest.Content.Converters
 {
+    /// <summary>
+    /// Получает изображение в зависимости от типа объекта
+    /// </summary>
     public class ObjectTypeToImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var path = "";
+            string path;
             var item = value is ObjectType ? (ObjectType) value : ObjectType.Unknown;
 
             switch (item)

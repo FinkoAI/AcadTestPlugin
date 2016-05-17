@@ -1,48 +1,48 @@
-﻿using System.Drawing.Text;
-using AcadPluginTest.Enums;
+﻿using AcadPluginTest.Enums;
 using AcadPluginTest.Helpers;
 using AcadPluginTest.Model.Implementations;
+using AcadPluginTest.ViewModel.Entities.Implementations.Base;
 using AcadPluginTest.ViewModel.Entities.Interfaces;
 using Autodesk.AutoCAD.DatabaseServices;
 using GalaSoft.MvvmLight;
 
 namespace AcadPluginTest.ViewModel.Entities.Implementations
 {
-    public class AcadCircleVm : ViewModelBase, IAcadGeometryObject
+    public class AcadCircleVm :  BaseAcadGeometryObject
     {
         #region Private fields
 
-        private ObjectId _id;
-        private string _name;
-        private bool _isModified;
+        
+        private double _radius;
+        private double _thickness;
 
         #endregion
 
+        #region Properties
 
-        public AcadCircleVm(ObjectId id, Circle circle)
+        /// <summary>
+        /// Радиус окружности
+        /// </summary>
+        public double Radius
         {
-            
-            var center = circle.Center.ToIsoCoordinates();
-
-            Id = id;
-            IsModified = false;
-            AcadObjectType = ObjectType.Circle;
-            CenterCoordinate = center;
-            Radius = circle.Radius;
-            Thickness = circle.Thickness;
-
-            Name = string.Format("Окружность {0}", CenterCoordinate.ToCoordinateString()); 
+            get { return _radius; }
+            set { Set(() => Radius, ref _radius, value); }
         }
 
-        public ObjectId Id { get; set; }
-        public string Name { get; set; }
+        /// <summary>
+        /// Высота 3D
+        /// </summary>
+        public double Thickness
+        {
+            get { return _thickness; }
+            set { Set(() => Thickness, ref _thickness, value); }
+        }
 
-        public bool IsModified { get; set; }
         public ObjectType AcadObjectType { get; set; }
 
         public IsoCoordinate CenterCoordinate { get; set; }
-        public double Radius { get; set; }
 
-        public double Thickness { get; set; }
+        #endregion
+
     }
 }

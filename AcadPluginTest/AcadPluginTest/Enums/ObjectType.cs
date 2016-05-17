@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace AcadPluginTest.Enums
 {
+    /// <summary>
+    /// Перечисление типов объектов
+    /// Соответствует свойству ObjectId.ObjectClass.DxfName
+    /// </summary>
     public enum ObjectType
     {
         [Description("POINT")]

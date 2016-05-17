@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AcadPluginTest.ViewModel.Entities.Interfaces
 {
-    interface IAcadGeometryObject : IAcadObject
+    public interface IAcadGeometryObject : IAcadObject
     {
         double Thickness { get; set; }
     }

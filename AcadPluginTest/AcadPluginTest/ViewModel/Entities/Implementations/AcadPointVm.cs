@@ -1,34 +1,20 @@
 ﻿using AcadPluginTest.Enums;
-using AcadPluginTest.Helpers;
 using AcadPluginTest.Model.Implementations;
-using AcadPluginTest.ViewModel.Entities.Interfaces;
+using AcadPluginTest.ViewModel.Entities.Implementations.Base;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.Geometry;
-using GalaSoft.MvvmLight;
 
 namespace AcadPluginTest.ViewModel.Entities.Implementations
 {
-    public class AcadPointVm : ViewModelBase, IAcadGeometryObject
+    public class AcadPointVm : BaseAcadGeometryObject
     {
-        public AcadPointVm(ObjectId id, DBPoint point)
-        {
-            var coordinate = point.Position.ToIsoCoordinates();
+        #region Fields
+        #endregion
 
-            Id = id;
-            IsModified = false;
-            AcadObjectType = ObjectType.Point;
-            Thickness = point.Thickness;
-            Coordinate = coordinate;
+        #region Properties
+        #endregion
 
-            Name = string.Format("Точка {0}", Coordinate.ToCoordinateString());
-        }
-
-        public ObjectId Id { get; set; }
-        public string Name { get; set; }
-        public bool IsModified { get; set; }
-        public ObjectType AcadObjectType { get; set; }
+        
 
         public IsoCoordinate Coordinate { get; set; }
-        public double Thickness { get; set; }
     }
 }

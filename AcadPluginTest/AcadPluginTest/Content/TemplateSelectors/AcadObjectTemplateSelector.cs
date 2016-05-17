@@ -1,23 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using AcadPluginTest.Enums;
-using AcadPluginTest.ViewModel.Entities.Implementations;
 using AcadPluginTest.ViewModel.Entities.Interfaces;
 
 namespace AcadPluginTest.Content.TemplateSelectors
 {
     public class AcadObjectTemplateSelector : DataTemplateSelector
     {
-
+        /// <summary>
+        /// Выбирает Template для отображения редактируемых полей объектов чертежа
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="container"></param>
+        /// <returns></returns>
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             DataTemplate dataTemplate;
             var element = container as FrameworkElement;
+
+            if (element == null)
+                return null;
 
             var acadItem = item as IAcadObject;
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Media;
 using AcadPluginTest.Enums;
@@ -11,6 +10,11 @@ namespace AcadPluginTest.Helpers
 {
     public static class Extensions
     {
+        /// <summary>
+        /// Приводит строку к перечислению типов объекта на чертеже
+        /// </summary>
+        /// <param name="description"></param>
+        /// <returns></returns>
         public static ObjectType AsObjectType(this string description)
         {
             var enumType = typeof (ObjectType);
@@ -33,16 +37,34 @@ namespace AcadPluginTest.Helpers
             return ObjectType.Unknown;
         }
 
+        /// <summary>
+        /// Получает объект переданного типа
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="tr"></param>
+        /// <param name="id"></param>
+        /// <param name="openMode"></param>
+        /// <returns></returns>
         public static T GetTypedObject<T>(this Transaction tr, ObjectId id, OpenMode openMode) where T : class
         {
             return tr.GetObject(id, openMode) as T;
         }
 
+        /// <summary>
+        /// Получает объект типа IsoCoordinate из Autocad Point3d
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         public static IsoCoordinate ToIsoCoordinates(this Point3d point)
         {
             return new IsoCoordinate(point.X, point.Y, point.Z);
         }
 
+        /// <summary>
+        /// Получает строку координат
+        /// </summary>
+        /// <param name="coordinate"></param>
+        /// <returns></returns>
         public static string ToCoordinateString(this IsoCoordinate coordinate)
         {
             return string.Format("({0}, {1}, {2})", coordinate.XCoordinate.ToString("F3"),
@@ -50,6 +72,11 @@ namespace AcadPluginTest.Helpers
                 coordinate.ZCoordinate.ToString("F3"));
         }
 
+        /// <summary>
+        /// Получает объект типа System.Windows.Media.Color из Autodesk.AutoCAD.Colors.Color
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
         public static Color ToSystemColor(this Autodesk.AutoCAD.Colors.Color color)
         {
             return Color.FromRgb(color.Red, color.Green, color.Blue);

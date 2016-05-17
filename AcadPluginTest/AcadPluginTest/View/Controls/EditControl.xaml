@@ -24,9 +24,8 @@
                     Content="Обновить"
                     Command="{Binding RefreshCommand}"/>
             <Button Style="{StaticResource CommonButtonStyle}"
+                    Command="{Binding SaveCommand}"
                     Content="Сохранить" />
-            <Button Style="{StaticResource CommonButtonStyle}"
-                    Content="Отмена" />
         </StackPanel>
     </Grid>
 </UserControl>

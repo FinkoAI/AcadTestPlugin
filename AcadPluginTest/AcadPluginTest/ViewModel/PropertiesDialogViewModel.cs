@@ -1,27 +1,52 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using AcadPluginTest.Enums;
 using AcadPluginTest.Helpers;
 using AcadPluginTest.ViewModel.Entities.Implementations;
 using AcadPluginTest.ViewModel.Entities.Interfaces;
 using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.DatabaseServices;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace AcadPluginTest.ViewModel
 {
     public class PropertiesDialogViewModel : ViewModelBase
     {
-        private readonly Document _acadDocument;
-
-        private IAcadObject _selectedItem;
+        #region Constructors
 
         public PropertiesDialogViewModel(Document doc)
         {
             _acadDocument = doc;
             RefreshCommandHandler();
+            _acadDocument.CommandEnded += ViewChangedHandler;
+        }
+
+        #endregion
+
+        #region Private fields
+
+        private readonly Document _acadDocument;
+        private IAcadObject _selectedItem;
+        private DateTime _initializeDateTime;
+        private DateTime _lastModifyDateTime;
+
+        #endregion
+
+        #region Properties
+
+        public DateTime InitializeDateTime
+        {
+            get { return _initializeDateTime; }
+            set { Set(() => InitializeDateTime, ref _initializeDateTime, value); }
+        }
+
+        public DateTime LastModifyDateTime
+        {
+            get { return _lastModifyDateTime; }
+            set { Set(() => LastModifyDateTime, ref _lastModifyDateTime, value); }
         }
 
         public IAcadObject SelectedItem
@@ -34,9 +59,20 @@ namespace AcadPluginTest.ViewModel
             }
         }
 
+        public ObservableCollection<AcadLayerVm> Layers { get; set; }
+
+        #endregion
+
+        #region Commands
+
         public RelayCommand RefreshCommand
         {
             get { return new RelayCommand(RefreshCommandHandler); }
+        }
+
+        public RelayCommand SaveCommand
+        {
+            get { return new RelayCommand(SaveCommandHandler, CanSave); }
         }
 
         public RelayCommand<RoutedPropertyChangedEventArgs<object>> SelectionItemChangedCommand
@@ -44,8 +80,9 @@ namespace AcadPluginTest.ViewModel
             get { return new RelayCommand<RoutedPropertyChangedEventArgs<object>>(SelectionItemChangedCommandHandler); }
         }
 
-        public ObservableCollection<AcadLayerVm> Layers { get; set; }
+        #endregion
 
+        #region Command handlers
 
         private void SelectionItemChangedCommandHandler(RoutedPropertyChangedEventArgs<object> eventArgs)
         {
@@ -56,11 +93,30 @@ namespace AcadPluginTest.ViewModel
         {
             if (Layers == null)
                 Layers = new ObservableCollection<AcadLayerVm>();
-            
+
             SelectedItem = null;
             Layers.Clear();
-            AcadHelper.GetLayerVms(_acadDocument).ForEach(Layers.Add); 
+            AcadHelper.GetLayerVms(_acadDocument).ForEach(Layers.Add);
+
+            var date = DateTime.Now;
+
+            InitializeDateTime = date;
+            LastModifyDateTime = date;
         }
+
+        private bool CanSave()
+        {
+            return InitializeDateTime >= LastModifyDateTime;
+        }
+
+        private void SaveCommandHandler()
+        {
+            //TODO: реализовать сохранение
+        }
+
+        #endregion
+
+        #region Private methods
 
         private void SelectObjectsOnDrawing()
         {
@@ -78,5 +134,17 @@ namespace AcadPluginTest.ViewModel
                 AcadHelper.SelectDrawingObjects(layer.Objects.Select(x => x.Id), _acadDocument);
             }
         }
+
+        private void ViewChangedHandler(object sender, CommandEventArgs e)
+        {
+            if (AcadHelper.ChangingCommands.Contains(e.GlobalCommandName))
+            {
+                LastModifyDateTime = DateTime.Now;
+            }
+
+            SaveCommand.RaiseCanExecuteChanged();
+        }
+
+        #endregion
     }
 }
