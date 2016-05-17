@@ -36,7 +36,7 @@ namespace AcadPluginTest.Content.Converters
                     throw new ArgumentOutOfRangeException();
             }
 
-            return new Uri("/AcadPluginTest;component" + path, UriKind.Relative);
+            return new BitmapImage(new Uri("/AcadPluginTest;component" + path, UriKind.Relative));
         }
 
 

@@ -7,6 +7,7 @@ using AcadPluginTest.ViewModel.Entities.Interfaces;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
+using Autodesk.AutoCAD.Internal;
 
 namespace AcadPluginTest.Helpers
 {
@@ -41,6 +42,12 @@ namespace AcadPluginTest.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Возвращает список всех Id объектов по имени слоя
+        /// </summary>
+        /// <param name="layerName"></param>
+        /// <param name="doc"></param>
+        /// <returns></returns>
         private static List<ObjectId> GetLayerObjectIds(string layerName, Document doc)
         {
             var editor = doc.Editor;
@@ -67,6 +74,12 @@ namespace AcadPluginTest.Helpers
             return null;
         }
 
+        /// <summary>
+        /// Возвращает список всех объектов на основе переданных Id
+        /// </summary>
+        /// <param name="objectIds"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
         private static List<IAcadObject> GetAllObjectsByIdList(List<ObjectId> objectIds, Database db)
         {
             var result = new List<IAcadObject>();
@@ -102,6 +115,11 @@ namespace AcadPluginTest.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Возвращает список ViewModel'ей слоёв
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <returns></returns>
         public static List<AcadLayerVm> GetLayerVms(Document doc)
         {
             var database = doc.Database;
@@ -120,6 +138,29 @@ namespace AcadPluginTest.Helpers
             }
 
             return layerVmList;
+        }
+
+        /// <summary>
+        /// Выделяет объекты на чертеже на основе переданного списка Id
+        /// </summary>
+        /// <param name="objectIds"></param>
+        /// <param name="doc"></param>
+        public static void SelectDrawingObjects(IEnumerable<ObjectId> objectIds, Document doc)
+        {
+            Utils.SelectObjects(objectIds.ToArray());
+            doc.Editor.UpdateScreen();
+            doc.Editor.Regen();
+        }
+
+        /// <summary>
+        /// Снимает выделение у всех объектов чертежа 
+        /// </summary>
+        /// <param name="document"></param>
+        public static void DeselectAllDrawingObjects(Document document)
+        {
+            var editor = document.Editor;
+            var newIds = new ObjectId[0];
+            editor.SetImpliedSelection(newIds);
         }
     }
 }

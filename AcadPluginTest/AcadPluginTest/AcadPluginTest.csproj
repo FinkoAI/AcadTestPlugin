@@ -223,11 +223,11 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Content\Images\circle_50px.png" />
-    <Content Include="Content\Images\dots_50px.png" />
-    <Content Include="Content\Images\layers_50px.png" />
-    <Content Include="Content\Images\line_50px.png" />
-    <Content Include="Content\Images\unknown.png" />
+    <Resource Include="Content\Images\circle_50px.png" />
+    <Resource Include="Content\Images\dots_50px.png" />
+    <Resource Include="Content\Images\layers_50px.png" />
+    <Resource Include="Content\Images\line_50px.png" />
+    <Resource Include="Content\Images\unknown.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
