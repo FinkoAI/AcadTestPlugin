@@ -26,12 +26,14 @@ namespace AcadPluginTest.Factories
             {
                 Id = circle.ObjectId,
                 Name = string.Format("Окружность {0}", center.ToCoordinateString()),
-                IsModified = false,
                 AcadObjectType = ObjectType.Circle,
                 CenterCoordinate = center,
                 Radius = circle.Radius,
                 Thickness = circle.Thickness
             };
+
+            vm.CenterCoordinate.CoordianteChangedEvent += vm.SetModified;
+            vm.IsModified = false;
 
             return vm;
         }
@@ -50,12 +52,15 @@ namespace AcadPluginTest.Factories
             {
                 Id = line.ObjectId,
                 Name = string.Format("Линия {0} => {1}", startPoint.ToCoordinateString(), endPoint.ToCoordinateString()),
-                IsModified = false,
                 AcadObjectType = ObjectType.Line,
                 StartCoordinate = startPoint,
                 EndCoordinate = endPoint,
                 Thickness = line.Thickness
             };
+
+            vm.StartCoordinate.CoordianteChangedEvent += vm.SetModified;
+            vm.EndCoordinate.CoordianteChangedEvent += vm.SetModified;
+            vm.IsModified = false;
 
             return vm;
         }
@@ -75,9 +80,11 @@ namespace AcadPluginTest.Factories
                 Name = string.Format("Точка {0}", point.ToCoordinateString()),
                 AcadObjectType = ObjectType.Point,
                 Coordinate = point,
-                IsModified = false,
                 Thickness = acadPoint.Thickness
             };
+
+            vm.Coordinate.CoordianteChangedEvent += vm.SetModified;
+            vm.IsModified = false;
 
             return vm;
         }
@@ -96,10 +103,11 @@ namespace AcadPluginTest.Factories
                 Name = acadLayer.Name,
                 Color = acadLayer.Color.ToSystemColor(),
                 AcadObjectType = ObjectType.Layer,
-                IsModified = false,
                 IsHidden = acadLayer.IsOff,
                 Objects = new ObservableCollection<IAcadGeometryObject>(acadGeometryObjects)
             };
+
+            vm.IsModified = false;
 
             return vm;
         }

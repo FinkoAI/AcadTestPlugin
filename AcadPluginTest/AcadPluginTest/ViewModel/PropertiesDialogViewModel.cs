@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 using AcadPluginTest.Enums;
 using AcadPluginTest.Helpers;
+using AcadPluginTest.Model.Interfaces;
 using AcadPluginTest.ViewModel.Entities.Implementations;
 using AcadPluginTest.ViewModel.Entities.Interfaces;
-using Autodesk.AutoCAD.ApplicationServices;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 
@@ -17,38 +15,24 @@ namespace AcadPluginTest.ViewModel
     {
         #region Constructors
 
-        public PropertiesDialogViewModel(Document doc)
+        public PropertiesDialogViewModel(IPropertiesDialogModel model)
         {
-            _acadDocument = doc;
+            _model = model;
             RefreshCommandHandler();
-            _acadDocument.CommandEnded += ViewChangedHandler;
+            //_acadDocument.CommandEnded += ViewChangedHandler;
         }
 
         #endregion
 
         #region Private fields
 
-        private readonly Document _acadDocument;
+        private readonly IPropertiesDialogModel _model;
         private IAcadObject _selectedItem;
-        private DateTime _initializeDateTime;
-        private DateTime _lastModifyDateTime;
 
         #endregion
 
         #region Properties
-
-        public DateTime InitializeDateTime
-        {
-            get { return _initializeDateTime; }
-            set { Set(() => InitializeDateTime, ref _initializeDateTime, value); }
-        }
-
-        public DateTime LastModifyDateTime
-        {
-            get { return _lastModifyDateTime; }
-            set { Set(() => LastModifyDateTime, ref _lastModifyDateTime, value); }
-        }
-
+        
         public IAcadObject SelectedItem
         {
             get { return _selectedItem; }
@@ -59,7 +43,7 @@ namespace AcadPluginTest.ViewModel
             }
         }
 
-        public ObservableCollection<AcadLayerVm> Layers { get; set; }
+        public ObservableCollection<ILayerObject> Layers { get; set; }
 
         #endregion
 
@@ -92,26 +76,22 @@ namespace AcadPluginTest.ViewModel
         private void RefreshCommandHandler()
         {
             if (Layers == null)
-                Layers = new ObservableCollection<AcadLayerVm>();
+                Layers = new ObservableCollection<ILayerObject>();
 
             SelectedItem = null;
             Layers.Clear();
-            AcadHelper.GetLayerVms(_acadDocument).ForEach(Layers.Add);
-
-            var date = DateTime.Now;
-
-            InitializeDateTime = date;
-            LastModifyDateTime = date;
+            var layers = _model.GetLayersData().ToList();
+            layers.ForEach(Layers.Add);
         }
 
         private bool CanSave()
         {
-            return InitializeDateTime >= LastModifyDateTime;
+            return true; //InitializeDateTime >= LastModifyDateTime;
         }
 
         private void SaveCommandHandler()
         {
-            //TODO: реализовать сохранение
+            _model.SaveChanges(Layers);
         }
 
         #endregion
@@ -122,27 +102,17 @@ namespace AcadPluginTest.ViewModel
         {
             if (SelectedItem == null)
             {
-                AcadHelper.DeselectAllDrawingObjects(_acadDocument);
+                AcadHelper.DeselectAllDrawingObjects(_model.Document);
             }
             else if (SelectedItem.AcadObjectType != ObjectType.Layer)
             {
-                AcadHelper.SelectDrawingObjects(new[] {SelectedItem.Id}, _acadDocument);
+                AcadHelper.SelectDrawingObjects(new[] { SelectedItem.Id }, _model.Document);
             }
             else
             {
                 var layer = (AcadLayerVm) SelectedItem;
-                AcadHelper.SelectDrawingObjects(layer.Objects.Select(x => x.Id), _acadDocument);
+                AcadHelper.SelectDrawingObjects(layer.Objects.Select(x => x.Id), _model.Document);
             }
-        }
-
-        private void ViewChangedHandler(object sender, CommandEventArgs e)
-        {
-            if (AcadHelper.ChangingCommands.Contains(e.GlobalCommandName))
-            {
-                LastModifyDateTime = DateTime.Now;
-            }
-
-            SaveCommand.RaiseCanExecuteChanged();
         }
 
         #endregion

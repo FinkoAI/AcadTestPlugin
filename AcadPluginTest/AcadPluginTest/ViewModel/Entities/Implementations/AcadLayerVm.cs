@@ -1,18 +1,18 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Media;
 using AcadPluginTest.ViewModel.Entities.Implementations.Base;
 using AcadPluginTest.ViewModel.Entities.Interfaces;
 
 namespace AcadPluginTest.ViewModel.Entities.Implementations
 {
-    public class AcadLayerVm : BaseAcadObject
+    public class AcadLayerVm : BaseAcadObject, ILayerObject
     {
         #region Fields
 
         private Color _color;
         private bool _isHidden;
         private ObservableCollection<IAcadGeometryObject> _objects;
-
 
         #endregion
 
@@ -21,13 +21,25 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
         public Color Color
         {
             get { return _color; }
-            set { Set(() => Color, ref _color, value); }
+            set
+            {
+                if (!_color.Equals(value))
+                    IsModified = true;
+
+                Set(() => Color, ref _color, value);
+            }
         }
 
         public bool IsHidden
         {
             get { return _isHidden; }
-            set { Set(() => IsHidden, ref _isHidden, value); }
+            set
+            {
+                if (_isHidden != value)
+                    IsModified = true;
+
+                Set(() => IsHidden, ref _isHidden, value);
+            }
         }
 
         public ObservableCollection<IAcadGeometryObject> Objects

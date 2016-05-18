@@ -17,14 +17,26 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations.Base
 
         #region Properties
 
-        #endregion
         /// <summary>
         /// Высота 3D
         /// </summary>
         public double Thickness
         {
             get { return _thisckness; }
-            set { Set(() => Thickness, ref _thisckness, value); }
+            set
+            {
+                if (_thisckness != value)
+                    IsModified = true;
+
+                Set(() => Thickness, ref _thisckness, value);
+            }
+        }
+
+        #endregion
+        
+        public void SetModified()
+        {
+            IsModified = true;
         }
     }
 }

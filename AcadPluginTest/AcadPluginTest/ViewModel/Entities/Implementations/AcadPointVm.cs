@@ -1,7 +1,4 @@
-﻿using AcadPluginTest.Enums;
-using AcadPluginTest.Model.Implementations;
-using AcadPluginTest.ViewModel.Entities.Implementations.Base;
-using Autodesk.AutoCAD.DatabaseServices;
+﻿using AcadPluginTest.ViewModel.Entities.Implementations.Base;
 
 namespace AcadPluginTest.ViewModel.Entities.Implementations
 {
@@ -11,10 +8,9 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
         #endregion
 
         #region Properties
-        #endregion
-
-        
 
         public IsoCoordinate Coordinate { get; set; }
+
+        #endregion
     }
 }

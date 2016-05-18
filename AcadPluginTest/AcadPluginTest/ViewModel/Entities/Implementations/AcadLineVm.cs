@@ -1,10 +1,4 @@
-﻿using AcadPluginTest.Enums;
-using AcadPluginTest.Helpers;
-using AcadPluginTest.Model.Implementations;
-using AcadPluginTest.ViewModel.Entities.Implementations.Base;
-using AcadPluginTest.ViewModel.Entities.Interfaces;
-using Autodesk.AutoCAD.DatabaseServices;
-using GalaSoft.MvvmLight;
+﻿using AcadPluginTest.ViewModel.Entities.Implementations.Base;
 
 namespace AcadPluginTest.ViewModel.Entities.Implementations
 {
@@ -14,11 +8,11 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
         #endregion
 
         #region Properties
-        #endregion
-
         
-
         public IsoCoordinate StartCoordinate { get; set; }
         public IsoCoordinate EndCoordinate { get; set; }
+        
+        #endregion
+
     }
 }

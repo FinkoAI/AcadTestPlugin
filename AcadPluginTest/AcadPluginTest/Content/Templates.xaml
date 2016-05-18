@@ -10,6 +10,7 @@
 
     <templateSelector:AcadObjectTemplateSelector x:Key="AcadObjectTemplateSelector" />
     <converters:ObjectTypeToImageConverter x:Key="ObjectTypeToImageConverter" />
+    <converters:BooleanToFontWeightConverter x:Key="BooleanToFontWeightConverter" />
 
     <DataTemplate x:Key="EmptyControlTemplate">
         <StackPanel HorizontalAlignment="Center"
@@ -45,12 +46,11 @@
                        Grid.Row="1"
                        Grid.Column="0"
                        Style="{StaticResource HeaderLabelStyle}"></Label>
-                <xctk:ColorPicker   Grid.Row="1"
+                <xctk:ColorPicker   Grid.Row="1" 
                                     Grid.Column="1"
-                                    SelectedColor="{Binding Color}"
-                                    DisplayColorAndName="True"
-                                    UsingAlphaChannel="False"
-                                    Margin="5,5,5,0"></xctk:ColorPicker>
+                                    Style="{StaticResource ColorPickerThemeRus}"
+                                    SelectedColor="{Binding Color}" 
+                                    Margin="5,5,5,0" />
 
                 <Label Content="Видимость слоя"
                        Grid.Row="2"
@@ -161,8 +161,10 @@
                    Height="20"
                    Stretch="Fill" />
             <TextBlock Text="{Binding Name}"
+                       FontWeight="{Binding IsModified, Converter={StaticResource BooleanToFontWeightConverter}}"
                        Height="20" />
             <TextBlock Text="{Binding Objects.Count, StringFormat=' [{0}]'}"
+                       FontWeight="{Binding IsModified, Converter={StaticResource BooleanToFontWeightConverter}}"
                        Height="20" />
         </StackPanel>
         <HierarchicalDataTemplate.ItemTemplate>
@@ -173,12 +175,10 @@
                            Width="20"
                            Height="20"
                            Stretch="Fill" />
-                    <TextBlock Text="{Binding Name}" />
+                    <TextBlock Text="{Binding Name}" 
+                               FontWeight="{Binding IsModified, Converter={StaticResource BooleanToFontWeightConverter}}" />
                 </StackPanel>
             </DataTemplate>
         </HierarchicalDataTemplate.ItemTemplate>
     </HierarchicalDataTemplate>
-
-    
-
 </ResourceDictionary>

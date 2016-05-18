@@ -1,4 +1,4 @@
-﻿namespace AcadPluginTest.Model.Interfaces
+﻿namespace AcadPluginTest.ViewModel.Entities.Interfaces
 {
     public interface IIsoCoordinate
     {

@@ -23,13 +23,14 @@
         <Setter Property="Margin"
                 Value="0,5,5,0"></Setter>
     </Style>
-    
-    
-    <Style TargetType="{x:Type UserControl}" 
+
+
+    <Style TargetType="{x:Type UserControl}"
            x:Key="CommonUserControlStyle">
-        <Setter Property="Margin" Value="2,2,2,2"></Setter>
+        <Setter Property="Margin"
+                Value="2,2,2,2"></Setter>
     </Style>
-    
+
     <Style TargetType="{x:Type Button}"
            x:Key="CommonButtonStyle">
         <Setter Property="Width"
@@ -74,5 +75,28 @@
                 Value="Bold" />
         <Setter Property="Margin"
                 Value="5,5,5,0" />
+    </Style>
+
+    <Style x:Key="ColorPickerCommon"
+           TargetType="{x:Type xctk:ColorPicker}">
+        <Setter Property="DisplayColorAndName"
+                Value="False" />
+        <Setter Property="UsingAlphaChannel"
+                Value="False" />
+    </Style>
+    
+    <Style x:Key="ColorPickerThemeRus"
+           TargetType="{x:Type xctk:ColorPicker}"
+           BasedOn="{StaticResource ColorPickerCommon}">
+        <Setter Property="AvailableColorsHeader"
+                Value="Доступные"></Setter>
+        <Setter Property="RecentColorsHeader"
+                Value="Недавно использованные"></Setter>
+        <Setter Property="AdvancedButtonHeader"
+                Value="Расширенный вид"></Setter>
+        <Setter Property="StandardButtonHeader"
+                Value="Обычный вид" />
+        <Setter Property="StandardColorsHeader" 
+                Value="Стандартные" />
     </Style>
 </ResourceDictionary>

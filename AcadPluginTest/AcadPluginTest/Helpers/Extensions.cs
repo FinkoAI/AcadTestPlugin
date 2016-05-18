@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Media;
 using AcadPluginTest.Enums;
-using AcadPluginTest.Model.Implementations;
+using AcadPluginTest.ViewModel.Entities.Implementations;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 

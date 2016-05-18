@@ -166,5 +166,10 @@ namespace AcadPluginTest.Helpers
             var newIds = new ObjectId[0];
             editor.SetImpliedSelection(newIds);
         }
+
+        public static bool IsPalleteModelValid(IEnumerable<ILayerObject> layers)
+        {
+            return true;
+        }
     }
 }
