@@ -95,7 +95,7 @@ namespace AcadPluginTest.Factories
         /// <param name="acadLayer"></param>
         /// <param name="acadGeometryObjects"></param>
         /// <returns></returns>
-        public static IAcadObject GetAcadObjectVm(LayerTableRecord acadLayer, IEnumerable<IAcadGeometryObject> acadGeometryObjects)
+        public static ILayerObject GetAcadObjectVm(LayerTableRecord acadLayer, IEnumerable<IAcadGeometryObject> acadGeometryObjects, ObjectId zeroLayerId)
         {
             var vm = new AcadLayerVm
             {
@@ -104,10 +104,11 @@ namespace AcadPluginTest.Factories
                 Color = acadLayer.Color.ToSystemColor(),
                 AcadObjectType = ObjectType.Layer,
                 IsHidden = acadLayer.IsOff,
-                Objects = new ObservableCollection<IAcadGeometryObject>(acadGeometryObjects)
+                IsNotZeroLayer = acadLayer.ObjectId != zeroLayerId,
+                Objects = new ObservableCollection<IAcadGeometryObject>(acadGeometryObjects),
+                IsModified = false
             };
 
-            vm.IsModified = false;
 
             return vm;
         }

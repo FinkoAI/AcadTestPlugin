@@ -15,13 +15,15 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <uc:AcadObjectsTree Grid.Row="0"
+        <uc:ToolbarControl Grid.Row="0" />
+        <uc:AcadObjectsTree Grid.Row="1"
                             Grid.Column="0"
                             Style="{StaticResource CommonUserControlStyle}" />
-        <uc:EditControl Grid.Row="1"
+        <uc:EditControl Grid.Row="2"
                         Grid.Column="0"
                         Style="{StaticResource CommonUserControlStyle}"></uc:EditControl>
     </Grid>

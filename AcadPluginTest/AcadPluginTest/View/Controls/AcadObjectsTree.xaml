@@ -20,7 +20,7 @@
         <TreeView HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
                   ItemsSource="{Binding Layers}"
-                  ItemContainerStyle="{StaticResource TreeViewItemExpandedStyle}"
+                  ItemContainerStyle="{StaticResource TreeViewItemStyle}"
                   ItemTemplate="{StaticResource TreeViewHierahicalTemplate}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectedItemChanged">

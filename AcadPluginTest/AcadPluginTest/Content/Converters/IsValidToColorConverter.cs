@@ -1,20 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Windows;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace AcadPluginTest.Content.Converters
 {
-    /// <summary>
-    /// Выбирает гарнитуру шрифта в зависимости от наличия изменей в объекте
-    /// </summary>
-    class BooleanToFontWeightConverter : IValueConverter
+    class IsValidToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var isModified = (bool) value;
+            var isValid = (bool) value;
 
-            return isModified ? FontWeights.Bold : FontWeights.Normal;
+            var color = !isValid ? Color.FromRgb(255, 0, 0) : Color.FromRgb(0, 0, 0);
+
+            return new SolidColorBrush(color);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -2,6 +2,9 @@
 
 namespace AcadPluginTest.ViewModel.Entities.Implementations
 {
+    /// <summary>
+    /// ViewModel для объета типа точка
+    /// </summary>
     public class AcadPointVm : BaseAcadGeometryObject
     {
         #region Fields
@@ -9,6 +12,9 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
 
         #region Properties
 
+        /// <summary>
+        /// Координаты точки
+        /// </summary>
         public IsoCoordinate Coordinate { get; set; }
 
         #endregion

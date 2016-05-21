@@ -11,6 +11,7 @@
     <templateSelector:AcadObjectTemplateSelector x:Key="AcadObjectTemplateSelector" />
     <converters:ObjectTypeToImageConverter x:Key="ObjectTypeToImageConverter" />
     <converters:BooleanToFontWeightConverter x:Key="BooleanToFontWeightConverter" />
+    <converters:IsValidToColorConverter x:Key="IsValidToColorConverter" />
 
     <DataTemplate x:Key="EmptyControlTemplate">
         <StackPanel HorizontalAlignment="Center"
@@ -24,35 +25,40 @@
         <GroupBox Header="Свойства слоя">
             <Grid Margin="2,2,2,2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Label Content="Имя слоя"
                        Grid.Row="0"
-                       Grid.Column="0" 
+                       Grid.Column="0"
                        Style="{StaticResource HeaderLabelStyle}"></Label>
-                <TextBox Text="{Binding Name}"
-                         Grid.Row="0"
-                         Grid.Column="1" 
-                         Margin="5,5,5,0"></TextBox>
+                <AdornerDecorator Grid.Row="0"
+                                  Grid.Column="1">
+                    <xctk:WatermarkTextBox Text="{Binding Name, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                           IsEnabled="{Binding IsNotZeroLayer}"
+                                           Style="{StaticResource LayerNameTextBoxStyle}"
+                                           Watermark="Введите название слоя..."
+                                           KeepWatermarkOnGotFocus="True"
+                                           Margin="5,5,5,0" />
+                </AdornerDecorator>
 
                 <Label Content="Цвет слоя"
                        Grid.Row="1"
                        Grid.Column="0"
                        Style="{StaticResource HeaderLabelStyle}"></Label>
-                <xctk:ColorPicker   Grid.Row="1" 
+                <xctk:ColorPicker   Grid.Row="1"
                                     Grid.Column="1"
                                     Style="{StaticResource ColorPickerThemeRus}"
-                                    SelectedColor="{Binding Color}" 
+                                    SelectedColor="{Binding Color}"
                                     Margin="5,5,5,0" />
 
-                <Label Content="Видимость слоя"
+                <Label Content="Слой скрыт"
                        Grid.Row="2"
                        Grid.Column="0"
                        Style="{StaticResource HeaderLabelStyle}"></Label>
@@ -69,15 +75,15 @@
             <GroupBox Header="Общие характеристики">
                 <Grid Margin="2,2,2,2">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="250" />
                     </Grid.ColumnDefinitions>
                     <Label  Grid.Column="0"
                             Style="{StaticResource HeaderLabelStyle}"
                             Content="Высота" />
                     <xctk:DecimalUpDown Grid.Column="1"
                                         Value="{Binding Thickness}"
-                                        Style="{StaticResource GroupedDecimalUpDownStyle}"/>
+                                        Style="{StaticResource CanBeZeroDecimalUpDown}" />
 
                 </Grid>
             </GroupBox>
@@ -92,8 +98,8 @@
             <GroupBox Header="Общие характеристики">
                 <Grid Margin="2,2,2,2">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="250" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -106,18 +112,19 @@
                            Style="{StaticResource HeaderLabelStyle}"></Label>
                     <xctk:DecimalUpDown Grid.Row="0"
                                         Grid.Column="1"
-                                        Style="{StaticResource GroupedDecimalUpDownStyle}"
+                                        Minimum="0.001"
+                                        Style="{StaticResource CanNotBeZeroDecimalUpDown}"
                                         Value="{Binding Radius}" />
-                
+
                     <Label Grid.Row="1"
                            Grid.Column="0"
                            Content="Высота"
                            Style="{StaticResource HeaderLabelStyle}"></Label>
                     <xctk:DecimalUpDown Grid.Row="1"
                                         Grid.Column="1"
-                                        Style="{StaticResource GroupedDecimalUpDownStyle}"
+                                        Style="{StaticResource CanBeZeroDecimalUpDown}"
                                         Value="{Binding Thickness}" />
-                
+
                 </Grid>
             </GroupBox>
             <GroupBox Header="Координаты центра">
@@ -131,15 +138,15 @@
             <GroupBox Header="Общие характеристики">
                 <Grid Margin="2,2,2,2">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="250" />
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0"
                            Content="Высота"
                            Style="{StaticResource HeaderLabelStyle}"></Label>
                     <xctk:DecimalUpDown Grid.Column="1"
-                                        Style="{StaticResource GroupedDecimalUpDownStyle}"
+                                        Style="{StaticResource CanBeZeroDecimalUpDown}"
                                         Value="{Binding Thickness}" />
                 </Grid>
             </GroupBox>
@@ -162,10 +169,12 @@
                    Stretch="Fill" />
             <TextBlock Text="{Binding Name}"
                        FontWeight="{Binding IsModified, Converter={StaticResource BooleanToFontWeightConverter}}"
-                       Height="20" />
+                       Height="20"
+                       Foreground="{Binding IsValid, Converter={StaticResource IsValidToColorConverter}}"/>
             <TextBlock Text="{Binding Objects.Count, StringFormat=' [{0}]'}"
                        FontWeight="{Binding IsModified, Converter={StaticResource BooleanToFontWeightConverter}}"
-                       Height="20" />
+                       Height="20"
+                       Foreground="{Binding IsValid, Converter={StaticResource IsValidToColorConverter}}" />
         </StackPanel>
         <HierarchicalDataTemplate.ItemTemplate>
             <DataTemplate>
@@ -175,8 +184,9 @@
                            Width="20"
                            Height="20"
                            Stretch="Fill" />
-                    <TextBlock Text="{Binding Name}" 
-                               FontWeight="{Binding IsModified, Converter={StaticResource BooleanToFontWeightConverter}}" />
+                    <TextBlock Text="{Binding Name}"
+                               FontWeight="{Binding IsModified, Converter={StaticResource BooleanToFontWeightConverter}}"
+                               Foreground="{Binding IsValid, Converter={StaticResource IsValidToColorConverter}}" />
                 </StackPanel>
             </DataTemplate>
         </HierarchicalDataTemplate.ItemTemplate>

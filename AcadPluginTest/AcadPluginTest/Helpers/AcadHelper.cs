@@ -9,13 +9,179 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Internal;
+using AcadApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace AcadPluginTest.Helpers
 {
     public static class AcadHelper
     {
-        public static string[] ChangingCommands = new[] {"LAYER", "POINT", "LINE", "CIRCLE"};
+        #region Public methods
 
+        /// <summary>
+        /// Возвращает список ViewModel'ей слоёв
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <returns></returns>
+        public static List<ILayerObject> GetLayerVms(Document doc)
+        {
+            var database = doc.Database;
+
+            var acadLayers = GetLayers(database);
+            var layerVmList = new List<ILayerObject>();
+
+            foreach (var layerRecord in acadLayers)
+            {
+                var layerObjectIds = GetLayerObjectIds(layerRecord.Name, doc);
+                var layerObjects = GetAllObjectsByIdList(layerObjectIds, database);
+
+                var layerVm = AcadObjectVmFactory.GetAcadObjectVm(layerRecord, layerObjects, database.LayerZero);
+
+                layerVmList.Add(layerVm);
+            }
+
+            return layerVmList;
+        }
+
+        /// <summary>
+        /// Выделяет объекты на чертеже на основе переданного списка Id
+        /// </summary>
+        /// <param name="objectIds"></param>
+        /// <param name="doc"></param>
+        public static void SelectDrawingObjects(IEnumerable<ObjectId> objectIds, Document doc)
+        {
+            Utils.SelectObjects(objectIds.ToArray());
+            ReDrawScreen(doc);
+        }
+
+        /// <summary>
+        /// Снимает выделение у всех объектов чертежа 
+        /// </summary>
+        /// <param name="document"></param>
+        public static void DeselectAllDrawingObjects(Document document)
+        {
+            var editor = document.Editor;
+            var newIds = new ObjectId[0];
+            editor.SetImpliedSelection(newIds);
+        }
+
+        /// <summary>
+        /// Получает элементы дерева в виде плоского списка
+        /// </summary>
+        /// <param name="treeLayers"></param>
+        /// <returns></returns>
+        public static List<IAcadObject> GetFlatElementsTree(List<ILayerObject> treeLayers)
+        {
+            var modifiedObjects = treeLayers.Cast<IAcadObject>().ToList();
+            modifiedObjects.AddRange(treeLayers.SelectMany(x => x.Objects));
+
+            return modifiedObjects;
+        }
+
+        /// <summary>
+        /// Проверяет наличие всех объектов дерева
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="layersList"></param>
+        /// <returns></returns>
+        public static bool IsAllObjectsExist(Document document, IEnumerable<ILayerObject> layersList)
+        {
+            var result = true;
+
+            using (var tr = document.Database.TransactionManager.StartOpenCloseTransaction())
+            {
+                try
+                {
+                    foreach (var layer in layersList)
+                    {
+                        var layerRecord = tr.GetObject(layer.Id, OpenMode.ForRead) as LayerTableRecord;
+
+                        if (layerRecord == null)
+                            return false;
+
+                        if (layer.Objects.Any(acadObject => tr.GetObject(acadObject.Id, OpenMode.ForRead) == null))
+                        {
+                            return false;
+                        }
+
+                    }
+                }
+                catch (Exception)
+                {
+                    result = false;
+                }
+                finally
+                {
+                    tr.Commit();
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Сохраняет изменения внесённые пользователем
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="modifiedObjects"></param>
+        /// <returns></returns>
+        public static bool SaveModifiedObjects(Document document, List<IAcadObject> modifiedObjects)
+        {
+            DeselectAllDrawingObjects(document);
+
+            var result = true;
+            
+            using (document.LockDocument())
+            {
+                using (var tr = document.Database.TransactionManager.StartOpenCloseTransaction())
+                {
+                    try
+                    {
+                        foreach (var modifiedObject in modifiedObjects)
+                        {
+                            switch (modifiedObject.AcadObjectType)
+                            {
+                                case ObjectType.Point:
+                                    var pointObject = tr.GetTypedObject<DBPoint>(modifiedObject.Id, OpenMode.ForWrite);
+                                    var pointEntity = modifiedObject as AcadPointVm;
+                                    UpdateAcadObject(ref pointObject, pointEntity);
+                                    break;
+                                case ObjectType.Layer:
+                                    var layerObject = tr.GetTypedObject<LayerTableRecord>(modifiedObject.Id, OpenMode.ForWrite);
+                                    var layerEntity = modifiedObject as AcadLayerVm;
+                                    UpdateAcadObject(ref layerObject, layerEntity);
+                                    break;
+                                case ObjectType.Line:
+                                    var lineObject = tr.GetTypedObject<Line>(modifiedObject.Id, OpenMode.ForWrite);
+                                    var lineEntity = modifiedObject as AcadLineVm;
+                                    UpdateAcadObject(ref lineObject, lineEntity);
+                                    break;
+                                case ObjectType.Circle:
+                                    var circleObject = tr.GetTypedObject<Circle>(modifiedObject.Id, OpenMode.ForWrite);
+                                    var circleEntity = modifiedObject as AcadCircleVm;
+                                    UpdateAcadObject(ref circleObject, circleEntity);
+                                    break;
+                            }
+
+                            modifiedObject.IsModified = false;
+                        }
+
+
+                        tr.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        result = false;
+                    }
+                }
+            }
+
+            ReDrawScreen(document);
+            return result;
+        }
+
+        #endregion
+
+        #region Private methods
 
         /// <summary>
         /// Возвращает список всех слоёв документа
@@ -30,7 +196,7 @@ namespace AcadPluginTest.Helpers
             {
                 var layerTable = tr.GetObject(db.LayerTableId, OpenMode.ForRead) as LayerTable;
 
-                if (layerTable == null) 
+                if (layerTable == null)
                     return null;
 
                 result = new List<LayerTableRecord>();
@@ -87,7 +253,9 @@ namespace AcadPluginTest.Helpers
         private static List<IAcadGeometryObject> GetAllObjectsByIdList(List<ObjectId> objectIds, Database db)
         {
             var result = new List<IAcadGeometryObject>();
-            
+            if (objectIds == null)
+                return result;
+
             using (var tr = db.TransactionManager.StartOpenCloseTransaction())
             {
                 foreach (var objectId in objectIds.Where(x => x.ObjectClass.DxfName.AsObjectType() != ObjectType.Unknown))
@@ -120,56 +288,60 @@ namespace AcadPluginTest.Helpers
         }
 
         /// <summary>
-        /// Возвращает список ViewModel'ей слоёв
+        /// Обновляет объект типа слой
         /// </summary>
-        /// <param name="doc"></param>
-        /// <returns></returns>
-        public static List<AcadLayerVm> GetLayerVms(Document doc)
+        /// <param name="acadObject"></param>
+        /// <param name="entity"></param>
+        private static void UpdateAcadObject(ref LayerTableRecord acadObject, AcadLayerVm entity)
         {
-            var database = doc.Database;
-
-            var acadLayers = GetLayers(database);
-            var layerVmList = new List<AcadLayerVm>();
-
-            foreach (var layerRecord in acadLayers)
-            {
-                var layerObjectIds = GetLayerObjectIds(layerRecord.Name, doc);
-                var layerObjects = GetAllObjectsByIdList(layerObjectIds, database);
-
-                var layerVm = AcadObjectVmFactory.GetAcadObjectVm(layerRecord, layerObjects);
-
-                layerVmList.Add((AcadLayerVm)layerVm);
-            }
-
-            return layerVmList;
+            acadObject.Color = entity.Color.ToAcadColor();
+            if (!entity.IsNotZeroLayer)
+                acadObject.Name = entity.Name;
+            acadObject.IsOff = entity.IsHidden;
         }
 
         /// <summary>
-        /// Выделяет объекты на чертеже на основе переданного списка Id
+        /// Обновляет объект типа точка
         /// </summary>
-        /// <param name="objectIds"></param>
-        /// <param name="doc"></param>
-        public static void SelectDrawingObjects(IEnumerable<ObjectId> objectIds, Document doc)
+        /// <param name="acadObject"></param>
+        /// <param name="entity"></param>
+        private static void UpdateAcadObject(ref DBPoint acadObject, AcadPointVm entity)
         {
-            Utils.SelectObjects(objectIds.ToArray());
+            acadObject.Thickness = entity.Thickness;
+            acadObject.Position = entity.Coordinate.ToPoint3d();
+        }
+
+        /// <summary>
+        /// Обновляет объект типа окружность
+        /// </summary>
+        /// <param name="acadObject"></param>
+        /// <param name="entity"></param>
+        private static void UpdateAcadObject(ref Circle acadObject, AcadCircleVm entity)
+        {
+            acadObject.Radius = entity.Radius;
+            acadObject.Thickness = entity.Thickness;
+            acadObject.Center = entity.CenterCoordinate.ToPoint3d();
+        }
+
+        /// <summary>
+        /// Обновляет объекти типа линия
+        /// </summary>
+        /// <param name="acadObject"></param>
+        /// <param name="entity"></param>
+        private static void UpdateAcadObject(ref Line acadObject, AcadLineVm entity)
+        {
+            acadObject.Thickness = entity.Thickness;
+            acadObject.StartPoint = entity.StartCoordinate.ToPoint3d();
+            acadObject.EndPoint = entity.EndCoordinate.ToPoint3d();
+        }
+
+        private static void ReDrawScreen(Document doc)
+        {
+            AcadApplication.UpdateScreen();
             doc.Editor.UpdateScreen();
             doc.Editor.Regen();
         }
 
-        /// <summary>
-        /// Снимает выделение у всех объектов чертежа 
-        /// </summary>
-        /// <param name="document"></param>
-        public static void DeselectAllDrawingObjects(Document document)
-        {
-            var editor = document.Editor;
-            var newIds = new ObjectId[0];
-            editor.SetImpliedSelection(newIds);
-        }
-
-        public static bool IsPalleteModelValid(IEnumerable<ILayerObject> layers)
-        {
-            return true;
-        }
+        #endregion
     }
 }

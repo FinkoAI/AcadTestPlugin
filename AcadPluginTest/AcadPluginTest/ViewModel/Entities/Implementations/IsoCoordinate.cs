@@ -3,6 +3,9 @@ using GalaSoft.MvvmLight;
 
 namespace AcadPluginTest.ViewModel.Entities.Implementations
 {
+    /// <summary>
+    /// Класс для хранения координат объектов
+    /// </summary>
     public class IsoCoordinate : ObservableObject, IIsoCoordinate
     {
         #region Constructors
@@ -28,6 +31,9 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
 
         public delegate void CoordinateChangedEventHandler();
 
+        /// <summary>
+        /// Координата по ОСИ X
+        /// </summary>
         public double XCoordinate
         {
             get { return _xCoordinate; }
@@ -41,6 +47,9 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
             }
         }
 
+        /// <summary>
+        /// Координата по ОСИ Y
+        /// </summary>
         public double YCoordinate
         {
             get { return _yCoordinate; }
@@ -53,6 +62,9 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
             }
         }
 
+        /// <summary>
+        /// Координата по ОСИ Z
+        /// </summary>
         public double ZCoordinate
         {
             get { return _zCoordinate; }

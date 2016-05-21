@@ -73,6 +73,10 @@
       <HintPath>C:\ObjectARX 2015\inc\AdWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="FluentValidation, Version=6.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.6.2.1.0\lib\Net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
       <Private>True</Private>
@@ -137,6 +141,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Content\Converters\BooleanToFontWeightConverter.cs" />
+    <Compile Include="Content\Converters\IsValidToColorConverter.cs" />
     <Compile Include="Content\Converters\ObjectTypeToImageConverter.cs" />
     <Compile Include="Factories\AcadObjectVmFactory.cs" />
     <Compile Include="Model\Implementations\PropertiesDialogModel.cs" />
@@ -160,6 +165,7 @@
     <Compile Include="ViewModel\Entities\Implementations\AcadPointVm.cs" />
     <Compile Include="ViewModel\Entities\Interfaces\ILayerObject.cs" />
     <Compile Include="ViewModel\PropertiesDialogViewModel.cs" />
+    <Compile Include="ViewModel\Validation\AcadLayerVmValidator.cs" />
     <Compile Include="View\Controls\AcadObjectControl.xaml.cs">
       <DependentUpon>AcadObjectControl.xaml</DependentUpon>
     </Compile>
@@ -174,6 +180,9 @@
     </Compile>
     <Compile Include="View\Controls\TestControlForTemplates.xaml.cs">
       <DependentUpon>TestControlForTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\ToolbarControl.xaml.cs">
+      <DependentUpon>ToolbarControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PaletteControl.xaml.cs">
       <DependentUpon>PaletteControl.xaml</DependentUpon>
@@ -218,6 +227,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Controls\ToolbarControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\PaletteControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -227,7 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Content\Images\refresh.png" />
+    <Resource Include="Content\Images\save.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Content\Images\circle_50px.png" />
     <Resource Include="Content\Images\dots_50px.png" />

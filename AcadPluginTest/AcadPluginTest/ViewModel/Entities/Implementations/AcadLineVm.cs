@@ -2,6 +2,9 @@
 
 namespace AcadPluginTest.ViewModel.Entities.Implementations
 {
+    /// <summary>
+    /// ViewModel для объекта линия
+    /// </summary>
     public class AcadLineVm : BaseAcadGeometryObject
     {
         #region Fields
@@ -9,7 +12,14 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
 
         #region Properties
         
+        /// <summary>
+        /// Координаты начала
+        /// </summary>
         public IsoCoordinate StartCoordinate { get; set; }
+        
+        /// <summary>
+        /// Координаты конца
+        /// </summary>
         public IsoCoordinate EndCoordinate { get; set; }
         
         #endregion

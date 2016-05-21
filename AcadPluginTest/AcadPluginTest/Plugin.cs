@@ -16,7 +16,7 @@ namespace AcadPluginTest
 
         public void Terminate()
         {
-            //throw new NotImplementedException();
+            //TODO: возможно зделсь будет код
         }
 
         //очень странный костыль, но без этого не работают подключённые библиотеки
@@ -25,6 +25,7 @@ namespace AcadPluginTest
             typeof (System.Windows.Interactivity.Behavior).ToString();
             typeof (GalaSoft.MvvmLight.Command.EventToCommand).ToString();
             typeof (Xceed.Wpf.Toolkit.DecimalUpDown).ToString();
+            typeof (FluentValidation.IValidator).ToString();
         }
     }
 }

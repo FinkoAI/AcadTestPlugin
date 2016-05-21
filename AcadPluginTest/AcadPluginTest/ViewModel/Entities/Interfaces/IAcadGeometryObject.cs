@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AcadPluginTest.ViewModel.Entities.Interfaces
+﻿namespace AcadPluginTest.ViewModel.Entities.Interfaces
 {
+    /// <summary>
+    /// Интерфейс для геометрических объектов
+    /// </summary>
     public interface IAcadGeometryObject : IAcadObject
     {
         double Thickness { get; set; }

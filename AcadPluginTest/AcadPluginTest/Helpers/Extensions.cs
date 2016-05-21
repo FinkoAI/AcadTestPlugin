@@ -3,8 +3,11 @@ using System.ComponentModel;
 using System.Windows.Media;
 using AcadPluginTest.Enums;
 using AcadPluginTest.ViewModel.Entities.Implementations;
+using AcadPluginTest.ViewModel.Entities.Interfaces;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
+using AcadColor = Autodesk.AutoCAD.Colors.Color;
+using MediaColor = System.Windows.Media.Color;
 
 namespace AcadPluginTest.Helpers
 {
@@ -61,6 +64,16 @@ namespace AcadPluginTest.Helpers
         }
 
         /// <summary>
+        /// Получает объект типа Point3d из IIsoCoordinate
+        /// </summary>
+        /// <param name="coordinate"></param>
+        /// <returns></returns>
+        public static Point3d ToPoint3d(this IIsoCoordinate coordinate)
+        {
+            return new Point3d(coordinate.XCoordinate, coordinate.YCoordinate, coordinate.ZCoordinate);
+        }
+
+        /// <summary>
         /// Получает строку координат
         /// </summary>
         /// <param name="coordinate"></param>
@@ -77,9 +90,19 @@ namespace AcadPluginTest.Helpers
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        public static Color ToSystemColor(this Autodesk.AutoCAD.Colors.Color color)
+        public static MediaColor ToSystemColor(this AcadColor color)
         {
-            return Color.FromRgb(color.Red, color.Green, color.Blue);
+            return MediaColor.FromRgb(color.Red, color.Green, color.Blue);
+        }
+
+        /// <summary>
+        /// Получает объект типа Autodesk.AutoCAD.Colors.Color из System.Windows.Media.Color
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public static AcadColor ToAcadColor(this MediaColor color)
+        {
+            return AcadColor.FromColor(color);
         }
     }
 }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AcadPluginTest.ViewModel.Entities.Interfaces;
+﻿using AcadPluginTest.ViewModel.Entities.Interfaces;
 
 namespace AcadPluginTest.ViewModel.Entities.Implementations.Base
 {
+    /// <summary>
+    /// Базовый класс для геометрических объектов чертежа(линия, точка, окружность)
+    /// </summary>
     public class BaseAcadGeometryObject : BaseAcadObject, IAcadGeometryObject
     {
         #region Fields
@@ -26,7 +24,7 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations.Base
             set
             {
                 if (_thisckness != value)
-                    IsModified = true;
+                    SetModified();
 
                 Set(() => Thickness, ref _thisckness, value);
             }
@@ -34,9 +32,6 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations.Base
 
         #endregion
         
-        public void SetModified()
-        {
-            IsModified = true;
-        }
+        
     }
 }

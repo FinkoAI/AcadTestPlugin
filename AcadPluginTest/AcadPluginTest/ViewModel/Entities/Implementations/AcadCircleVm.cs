@@ -7,6 +7,9 @@ using GalaSoft.MvvmLight;
 
 namespace AcadPluginTest.ViewModel.Entities.Implementations
 {
+    /// <summary>
+    /// ViewModel для объекта типа окружность
+    /// </summary>
     public class AcadCircleVm : BaseAcadGeometryObject
     {
         #region Private fields
@@ -26,12 +29,15 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
             set
             {
                 if (_radius != value)
-                    IsModified = true;
+                    SetModified();
                 Set(() => Radius, ref _radius, value);
 
             }
         }
 
+        /// <summary>
+        /// Координаты центра окружности
+        /// </summary>
         public IsoCoordinate CenterCoordinate { get; set; }
 
         #endregion

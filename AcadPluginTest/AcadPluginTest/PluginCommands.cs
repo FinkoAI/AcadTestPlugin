@@ -10,7 +10,6 @@ namespace AcadPluginTest
 {
     public class PluginCommands
     {
-        private static PaletteSet _ps = null;
 
         [CommandMethod("SHOW_DIALOG")]
         public void ShowSettingsDialog()
@@ -32,7 +31,7 @@ namespace AcadPluginTest
             var document = AutocadApplication.DocumentManager.MdiActiveDocument;
             var model = new PropertiesDialogModel(document);
 
-            _ps = new PaletteSet("Редактирование графических примитивов")
+            var ps = new PaletteSet("Редактирование графических примитивов")
             {
                     
                 Size = new Size(450, 600),
@@ -43,11 +42,11 @@ namespace AcadPluginTest
             {
                 DataContext = new PropertiesDialogViewModel(model)
             };
-            _ps.AddVisual("PaletteControl", uc);
-            
+            ps.AddVisual("PaletteControl", uc);
 
-            _ps.KeepFocus = true;
-            _ps.Visible = true;
+
+            ps.KeepFocus = true;
+            ps.Visible = true;
         }
     }
 }
