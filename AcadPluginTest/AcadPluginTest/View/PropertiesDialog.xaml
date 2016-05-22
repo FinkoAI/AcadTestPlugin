@@ -17,6 +17,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -24,9 +25,23 @@
         </Grid.ColumnDefinitions>
         <uc:AcadObjectsTree Grid.Row="0"
                             Grid.Column="0"
+                            Grid.RowSpan="2"
                             Style="{StaticResource CommonUserControlStyle}" />
         <uc:EditControl Grid.Row="0"
                         Grid.Column="1"
                         Style="{StaticResource CommonUserControlStyle}" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button Command="{Binding RefreshCommand}"
+                    Content="Обновить"
+                    Style="{StaticResource CommonButtonStyle}" />
+            <Button Command="{Binding SaveCommand}"
+                    Content="Сохранить"
+                    ToolTip="{Binding SaveLockDescription}"
+                    ToolTipService.ShowOnDisabled="True"
+                    Style="{StaticResource CommonButtonStyle}" />
+        </StackPanel>
     </Grid>
 </Window>
