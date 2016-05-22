@@ -33,7 +33,7 @@ namespace AcadPluginTest.Content.TemplateSelectors
                     dataTemplate = element.FindResource("PointControlTemplate") as DataTemplate;
                     break;
                 case ObjectType.Layer:
-                    dataTemplate = element.FindResource("LayerControlTemplate") as DataTemplate;
+                    dataTemplate = element.FindResource("LayerPropertyGridTemplate") as DataTemplate;
                     break;
                 case ObjectType.Line:
                     dataTemplate = element.FindResource("LineControlTemplate") as DataTemplate;

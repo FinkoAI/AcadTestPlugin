@@ -21,6 +21,28 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate x:Key="LayerPropertyGridTemplate">
+        <xctk:PropertyGrid SelectedObject="{Binding}"
+                           SelectedObjectName="{Binding Name}"
+                           ShowTitle="False"
+                           AutoGenerateProperties="False">
+            <xctk:PropertyGrid.PropertyDefinitions>
+                <xctk:PropertyDefinition TargetProperties="Name"
+                                         Category="Основные"
+                                         DisplayName="Имя слоя"
+                                         DisplayOrder="0" />
+                <xctk:PropertyDefinition TargetProperties="Color"
+                                         Category="Основные"
+                                         DisplayName="Цвет слоя"
+                                         DisplayOrder="1" />
+                <xctk:PropertyDefinition TargetProperties="IsHidden"
+                                         Category="Основные"
+                                         DisplayName="Слой скрыт"
+                                         DisplayOrder="2" />
+            </xctk:PropertyGrid.PropertyDefinitions>
+        </xctk:PropertyGrid>
+    </DataTemplate>
+
     <DataTemplate x:Key="LayerControlTemplate">
         <GroupBox Header="Свойства слоя">
             <Grid Margin="2,2,2,2">
@@ -170,7 +192,7 @@
             <TextBlock Text="{Binding Name}"
                        FontWeight="{Binding IsModified, Converter={StaticResource BooleanToFontWeightConverter}}"
                        Height="20"
-                       Foreground="{Binding IsValid, Converter={StaticResource IsValidToColorConverter}}"/>
+                       Foreground="{Binding IsValid, Converter={StaticResource IsValidToColorConverter}}" />
             <TextBlock Text="{Binding Objects.Count, StringFormat=' [{0}]'}"
                        FontWeight="{Binding IsModified, Converter={StaticResource BooleanToFontWeightConverter}}"
                        Height="20"
