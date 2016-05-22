@@ -9,16 +9,18 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
     public class IsoCoordinate : ObservableObject, IIsoCoordinate
     {
         #region Constructors
+
         public IsoCoordinate(double x, double y, double z)
         {
             XCoordinate = x;
             YCoordinate = y;
             ZCoordinate = z;
         }
+
         #endregion
 
         #region Fields
-        
+
         private double _xCoordinate;
         private double _yCoordinate;
         private double _zCoordinate;
@@ -27,6 +29,9 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
 
         #region Properties
 
+        /// <summary>
+        /// Событие изменения одной из координат (для уведомления родительского объекта об изменениях) 
+        /// </summary>
         public event CoordinateChangedEventHandler CoordianteChangedEvent;
 
         public delegate void CoordinateChangedEventHandler();
@@ -56,7 +61,7 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
             set
             {
                 Set(() => YCoordinate, ref _yCoordinate, value);
-                
+
                 if (CoordianteChangedEvent != null)
                     CoordianteChangedEvent();
             }
@@ -78,6 +83,6 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
         }
 
         #endregion
-        
+
     }
 }

@@ -94,6 +94,7 @@ namespace AcadPluginTest.Factories
         /// </summary>
         /// <param name="acadLayer"></param>
         /// <param name="acadGeometryObjects"></param>
+        /// <param name="zeroLayerId"></param>
         /// <returns></returns>
         public static ILayerObject GetAcadObjectVm(LayerTableRecord acadLayer, IEnumerable<IAcadGeometryObject> acadGeometryObjects, ObjectId zeroLayerId)
         {

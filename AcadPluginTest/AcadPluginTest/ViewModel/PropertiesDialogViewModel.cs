@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using AcadPluginTest.Enums;
@@ -96,12 +95,18 @@ namespace AcadPluginTest.ViewModel
         #endregion
 
         #region Command handlers
-
+        /// <summary>
+        /// Устанавливает значение SelectedItem
+        /// </summary>
+        /// <param name="eventArgs"></param>
         private void SelectionItemChangedCommandHandler(RoutedPropertyChangedEventArgs<object> eventArgs)
         {
             SelectedItem = (IAcadObject) eventArgs.NewValue;
         }
 
+        /// <summary>
+        /// Обновляет данные в панели
+        /// </summary>
         private void RefreshCommandHandler()
         {
             var id = SelectedItem != null ? SelectedItem.Id : ObjectId.Null;
@@ -126,6 +131,10 @@ namespace AcadPluginTest.ViewModel
             }
         }
 
+        /// <summary>
+        /// Проверяет возможность сохранения изменений
+        /// </summary>
+        /// <returns></returns>
         private bool CanSave()
         {
             var flatTree = AcadHelper.GetFlatElementsTree(Layers.ToList());
@@ -153,6 +162,9 @@ namespace AcadPluginTest.ViewModel
             return false;
         }
 
+        /// <summary>
+        /// Сохраняет изменения
+        /// </summary>
         private void SaveCommandHandler()
         {
             if (!_model.TrySaveChanges(Layers.ToList()))

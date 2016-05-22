@@ -24,7 +24,7 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations
 
         public AcadLayerVm()
         {
-            _validator = new AcadLayerVmValidator();
+            Validator = new AcadLayerVmValidator();
         }
 
         #endregion

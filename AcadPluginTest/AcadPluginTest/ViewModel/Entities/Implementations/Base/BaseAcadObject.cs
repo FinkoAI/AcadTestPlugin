@@ -19,7 +19,7 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations.Base
         private string _name;
         private bool _isModified;
         private bool _isSelected;
-        protected IValidator _validator;
+        protected IValidator Validator;
 
         #endregion
 
@@ -64,10 +64,10 @@ namespace AcadPluginTest.ViewModel.Entities.Implementations.Base
         {
             get
             {
-                if (_validator == null)
+                if (Validator == null)
                     return null;
 
-                return _validator.Validate(this);
+                return Validator.Validate(this);
             }
         }
 

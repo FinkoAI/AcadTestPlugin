@@ -308,7 +308,7 @@ namespace AcadPluginTest.Helpers
         private static void UpdateAcadObject(ref DBPoint acadObject, AcadPointVm entity)
         {
             acadObject.Thickness = entity.Thickness;
-            acadObject.Position = entity.Coordinate.ToPoint3d();
+            acadObject.Position = entity.Coordinate.ToPoint3D();
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace AcadPluginTest.Helpers
         {
             acadObject.Radius = entity.Radius;
             acadObject.Thickness = entity.Thickness;
-            acadObject.Center = entity.CenterCoordinate.ToPoint3d();
+            acadObject.Center = entity.CenterCoordinate.ToPoint3D();
         }
 
         /// <summary>
@@ -331,8 +331,8 @@ namespace AcadPluginTest.Helpers
         private static void UpdateAcadObject(ref Line acadObject, AcadLineVm entity)
         {
             acadObject.Thickness = entity.Thickness;
-            acadObject.StartPoint = entity.StartCoordinate.ToPoint3d();
-            acadObject.EndPoint = entity.EndCoordinate.ToPoint3d();
+            acadObject.StartPoint = entity.StartCoordinate.ToPoint3D();
+            acadObject.EndPoint = entity.EndCoordinate.ToPoint3D();
         }
 
         private static void ReDrawScreen(Document doc)

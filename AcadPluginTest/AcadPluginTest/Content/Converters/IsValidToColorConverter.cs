@@ -9,7 +9,10 @@ using System.Windows.Media;
 
 namespace AcadPluginTest.Content.Converters
 {
-    class IsValidToColorConverter : IValueConverter
+    /// <summary>
+    /// Получает цвет отображения объекта в дереве в зависимости от наличия ошибок
+    /// </summary>
+    public class IsValidToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

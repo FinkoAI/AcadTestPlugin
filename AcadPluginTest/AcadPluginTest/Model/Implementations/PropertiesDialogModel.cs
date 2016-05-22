@@ -12,17 +12,31 @@ namespace AcadPluginTest.Model.Implementations
     /// </summary>
     public class PropertiesDialogModel : IPropertiesDialogModel
     {
+        #region Private fields
+
         private readonly Document _document;
+
+        #endregion
+
+        #region Constructors
+
+        public PropertiesDialogModel(Document document)
+        {
+            _document = document;
+        }
+
+        #endregion
+
+        #region Public properties
 
         public Document Document
         {
             get { return _document; }
         }
 
-        public PropertiesDialogModel(Document document)
-        {
-            _document = document;
-        }
+        #endregion
+
+        #region Public methods
 
         /// <summary>
         /// Пытается сохранить данные
@@ -53,5 +67,7 @@ namespace AcadPluginTest.Model.Implementations
         {
             return AcadHelper.GetLayerVms(_document);
         }
+
+        #endregion
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows.Media;
 using AcadPluginTest.Enums;
 using AcadPluginTest.ViewModel.Entities.Implementations;
 using AcadPluginTest.ViewModel.Entities.Interfaces;
@@ -68,7 +67,7 @@ namespace AcadPluginTest.Helpers
         /// </summary>
         /// <param name="coordinate"></param>
         /// <returns></returns>
-        public static Point3d ToPoint3d(this IIsoCoordinate coordinate)
+        public static Point3d ToPoint3D(this IIsoCoordinate coordinate)
         {
             return new Point3d(coordinate.XCoordinate, coordinate.YCoordinate, coordinate.ZCoordinate);
         }
